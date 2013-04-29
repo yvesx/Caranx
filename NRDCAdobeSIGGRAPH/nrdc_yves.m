@@ -7,7 +7,7 @@ diversity_counter_thres = 6;
 fileIndex = find(~[files.isdir]);
 
 counter = 0;
-for i = 1:3
+for i = 5:10
     diversity_counter = 0;
     counter = 0;
     %% randomize search
@@ -20,8 +20,8 @@ for i = 1:3
         if (counter > counter_thres || diversity_counter > diversity_counter_thres)
             break;
         end
-        Src_path = strcat(my_dir, files(fileIndex(B(j))).name);
-        Ref_path = strcat(my_dir, files(fileIndex(i)).name);
+        Src_path = strcat(my_dir, files(fileIndex(i)).name);
+        Ref_path = strcat(my_dir, files(fileIndex(B(j))).name);
         Src             = double(imread(Src_path)) / 255.0;
         Ref             = double(imread(Ref_path)) / 255.0;
         %% Reduce size if source image is too big
