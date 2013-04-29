@@ -9,7 +9,10 @@ fileIndex = find(~[files.isdir]);
 counter = 0;
 for i = 8:20
     diversity_counter = 0;
-    for j = i+1:length(fileIndex)
+    %% randomize search
+    A = i+1:length(fileIndex);
+    B=A(randperm(length(A)));
+    for j = 1:length(B)
         disp(strcat(num2str(i),'-',num2str(j)));
         filename = strcat(my_out_dir,num2str(i),'-',num2str(j),'.jpg');
         counter = counter + 1;
