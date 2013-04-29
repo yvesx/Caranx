@@ -14,7 +14,7 @@ curl -XGET http://localhost:8080/instagram_media/efficient_map/_search -d '{
     }
   },
   "from": 0,
-  "size": 500,
+  "size": 5000,
   "sort": [],
   "facets": {}
 }' > insta_starbuck_5000.json
