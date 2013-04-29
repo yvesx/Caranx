@@ -1,0 +1,93 @@
+%% Read files
+files = dir('./sbux/');
+
+fileIndex = find(~[files.isdir]);
+
+counter = 0;
+for i = 1:length(fileIndex)-1
+    for j = i+1:length(fileIndex)
+        counter = counter + 1;
+        if (counter > 10)
+            break;
+        end
+        Src_path = files(fileIndex(i)).name;
+        Ref_path = files(fileIndex(j)).name;
+        Src             = double(imread(Src_path)) / 255.0;
+        Ref             = double(imread(Ref_path)) / 255.0;
+        %% Reduce size if source image is too big
+        rf = max(max(size(Src)))  / 640;
+        if (rf > 1)
+            disp('source image is too big. resize automatically.')
+            Src = imresize(Src, 1.0/rf);
+            Ref = imresize(Ref, 1.0/rf);
+        end
+        %% Set an empty options struct
+        NRDC_Options = [];
+        %% Uncomment the next line to prefer determinism over speed.
+        % NRDC_Options.isParallelized = false; 
+        %% Run NRDC (This version is optimized for best quality, not for speed).
+        if (~exist('per_pixel_constraints', 'var') || isempty(per_pixel_constraints))
+            tic
+            [DCF, ~, ~, AlignedRef] = nrdc(Src, Ref, NRDC_Options);
+            toc % 9.5 seconds for the attached example (using the parallelized version on 2.3GHz Intel Core i7 (2820qm) MacBook Pro)
+        else % Run with per pixel-constraint
+            tic
+            [DCF, ~, ~, AlignedRef] = nrdc(Src, Ref, NRDC_Options, per_pixel_constraints);
+            toc % 8.6 seconds for the attached example (using the parallelized version on 2.3GHz Intel Core i7 (2820qm) MacBook Pro)
+        end
+        %% Display the result:
+        if isempty(DCF)
+            disp('No matching has been found.')
+        else
+            % Show aligned reference:
+            filename = strcat('./sbux_out')
+            imwrite(AlignedRef,'./sbux_out/sample.jpg');
+        end
+    end
+end
+% Do stuff
+Src_path        = 'src.png'; % src filename
+Ref_path        = 'ref.png'; % ref filename    
+        Src             = double(imread(Src_path)) / 255.0;
+        Ref             = double(imread(Ref_path)) / 255.0;
+
+        %% Reduce size if source image is too big
+        OriginalSource = Src; % Keep the original source before changing its size.
+        rf = max(max(size(Src)))  / 640;
+        if (rf > 1)
+            disp('source image is too big. resize automatically.')
+            Src = imresize(Src, 1.0/rf);
+            Ref = imresize(Ref, 1.0/rf);
+        end
+
+        %% Set an empty options struct
+        NRDC_Options = [];
+
+        %% Uncomment the next line to prefer determinism over speed.
+        % NRDC_Options.isParallelized = false; 
+
+        %% Run NRDC (This version is optimized for best quality, not for speed).
+
+        if (~exist('per_pixel_constraints', 'var') || isempty(per_pixel_constraints))
+
+            tic
+            [DCF, Confidence, T, AlignedRef] = nrdc(Src, Ref, NRDC_Options);
+            toc % 9.5 seconds for the attached example (using the parallelized version on 2.3GHz Intel Core i7 (2820qm) MacBook Pro)
+
+        else % Run with per pixel-constraint
+
+            tic
+            [DCF, Confidence, T, AlignedRef] = nrdc(Src, Ref, NRDC_Options, per_pixel_constraints);
+            toc % 8.6 seconds for the attached example (using the parallelized version on 2.3GHz Intel Core i7 (2820qm) MacBook Pro)
+        end
+
+        %% Display the result:
+
+        if isempty(DCF)
+            disp('No matching has been found.')
+        else
+
+            % Show aligned reference:
+            imwrite(AlignedRef,'./sbux_out/sample.jpg');
+
+end
