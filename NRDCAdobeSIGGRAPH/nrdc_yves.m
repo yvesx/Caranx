@@ -43,7 +43,7 @@ for i = s_idx:e_idx
             diversity_counter = diversity_counter + 1;
             bw_align = im2bw(AlignedRef,0.01);
             bw_align = bwconvhull(bw_align);
-            bw_align = padarray(bw_align,size(Src)-size(bw_align));
+            bw_align = padarray(bw_align,size(Src(:,:,1))-size(bw_align));
             a = repmat(bw_align,[1,1,3]);
             masked = Src.*a;
             %imshow(masked);
