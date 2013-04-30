@@ -21,6 +21,7 @@ for i = s_idx:e_idx
         disp(strcat(num2str(i),'-',num2str(B(j)))); %% note the B(j) not j.
         filename = strcat(my_out_dir,num2str(i),'-',num2str(B(j)),'.jpg');
         srcname = strcat(my_out_dir,num2str(i),'.jpg');
+        refname = strcat(my_out_dir,num2str(B(j)),'.jpg');
         counter = counter + 1;
         %% stop if a visual itm is already frequent or has gone through enough items
         if (counter > counter_thres || diversity_counter > diversity_counter_thres)
@@ -55,6 +56,7 @@ for i = s_idx:e_idx
             %imshow(masked);
             imwrite(masked,filename);
             imwrite(Src,srcname);
+            imwrite(Ref,refname);
         end
     end
 end
