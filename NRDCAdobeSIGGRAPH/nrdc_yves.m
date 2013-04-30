@@ -1,6 +1,6 @@
 %% Read files
 
-function [] = nrdc_yves(my_dir,my_out_dir,counter_thres, diversity_counter_thres)
+function [] = nrdc_yves(my_dir,my_out_dir,counter_thres, diversity_counter_thres,s_idx,e_idx)
 %% my_dir = './tmobile/';
 %% my_out_dir = './tmobile_out/';
 files = dir(my_dir);
@@ -8,12 +8,11 @@ files = dir(my_dir);
 %% diversity_counter_thres = 6;
 fileIndex = find(~[files.isdir]);
 
-for i = 1:2
+for i = s_idx:e_idx
     diversity_counter = 0;
     counter = 0;
     %% randomize search
-    A = [13,16];
-    %A = i+1:length(fileIndex);
+    A = i+1:length(fileIndex);
     B=A(randperm(length(A)));
     for j = 1:length(B)
         disp(strcat(num2str(i),'-',num2str(B(j))));
@@ -42,27 +41,13 @@ for i = 1:2
         else
             % Show aligned reference:
             diversity_counter = diversity_counter + 1;
-            bw_align = rgb2gray(AlignedRef);
-            bw_align = boundSegment(bw_align);
+            bw_align = im2bw(AlignedRef,0.01);
+            bw_align = bwconvhull(bw_align);
             bw_align = padarray(bw_align,size(Src)-size(bw_align));
-            imtool(Src.*repmat(bw_align,[1,1,3]));
-            imwrite(AlignedRef,filename);
+            a = repmat(bw_align,[1,1,3]);
+            masked = Src.*a;
+            %imshow(masked);
+            imwrite(masked,filename);
         end
     end
 end
-function [ boundImage ] = boundSegment( input_image )
-image = defaultSegment(input_image);
-clear s;
-s = regionprops(image, 'Area', 'BoundingBox');
-numObj = numel(s);
-index = 1;
-for k = 1: numObj-1
-    if s(k+1).Area > s(index).Area
-        index = k+1;
-    else
-        index = index;
-    end
-end
-figure, imshow(input_image);
-rectangle('Position',s(index).BoundingBox);
-boundImage = null;
