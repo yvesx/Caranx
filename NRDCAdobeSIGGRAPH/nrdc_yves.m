@@ -1,5 +1,8 @@
 %% Read files
-
+%% function for finding visual frequent patterns
+%%
+%%
+%% #######
 function [] = nrdc_yves(my_dir,my_out_dir,counter_thres, diversity_counter_thres,s_idx,e_idx)
 %% my_dir = './tmobile/';
 %% my_out_dir = './tmobile_out/';
@@ -43,9 +46,9 @@ for i = s_idx:e_idx
             % Show aligned reference:
             diversity_counter = diversity_counter + 1;
             bw_align = im2bw(AlignedRef,0.01);
-            bw_align = bwconvhull(bw_align);
-            bw_align = padarray(bw_align,size(Src(:,:,1))-size(bw_align));
-            a = repmat(bw_align,[1,1,3]);
+            bw_align1 = bwconvhull(bw_align);
+            bw_align2 = padarray(bw_align1,size(Src(:,:,1))-size(bw_align1),'post');
+            a = repmat(bw_align2,[1,1,3]);
             masked = Src.*a;
             %imshow(masked);
             imwrite(masked,filename);
