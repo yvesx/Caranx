@@ -17,6 +17,7 @@ for i = s_idx:e_idx
     for j = 1:length(B)
         disp(strcat(num2str(i),'-',num2str(B(j))));
         filename = strcat(my_out_dir,num2str(i),'-',num2str(B(j)),'.jpg');
+        srcname = strcat(my_out_dir,num2str(i),'.jpg');
         counter = counter + 1;
         if (counter > counter_thres || diversity_counter > diversity_counter_thres)
             break;
@@ -48,6 +49,7 @@ for i = s_idx:e_idx
             masked = Src.*a;
             %imshow(masked);
             imwrite(masked,filename);
+            imwrite(Src,srcname);
         end
     end
 end
