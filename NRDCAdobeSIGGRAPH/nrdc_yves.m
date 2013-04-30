@@ -1,13 +1,14 @@
 %% Read files
-my_dir = './tmobile/';
-my_out_dir = './tmobile_out/';
+
+function [] = nrdc_yves(my_dir,my_out_dir,counter_thres, diversity_counter_thres)
+%% my_dir = './tmobile/';
+%% my_out_dir = './tmobile_out/';
 files = dir(my_dir);
-counter_thres = 200;
-diversity_counter_thres = 6;
+%% counter_thres = 200;
+%% diversity_counter_thres = 6;
 fileIndex = find(~[files.isdir]);
 
-counter = 0;
-for i = 5:10
+for i = 11:20
     diversity_counter = 0;
     counter = 0;
     %% randomize search
