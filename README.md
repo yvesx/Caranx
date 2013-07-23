@@ -1,6 +1,6 @@
-SocialBrandAffinity
+Caranx: Indexing Social Images At Massive Scale
 ========================
-Project name: Eyra
+Project name: Caranx
 
 code and data for capturing the social brand affinity. brands influence each other in asymmetrical ways.
 
